@@ -1,0 +1,105 @@
+/* Estilo general para toda la aplicación */
+QWidget {
+    background-color: #2e3440; /* Fondo oscuro */
+    color: #d8dee9; /* Texto claro */
+    font-family: "Arial", sans-serif;
+    font-size: 14px;
+}
+
+/* Botones */
+QPushButton {
+    background-color: #4c566a; /* Fondo gris oscuro */
+    color: #eceff4; /* Texto claro */
+    border: 2px solid #3b4252; /* Borde oscuro */
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+QPushButton:hover {
+    background-color: #5e81ac; /* Fondo azul al pasar el ratón */
+    border: 2px solid #81a1c1; /* Borde azul claro */
+}
+
+QPushButton:pressed {
+    background-color: #3b4252; /* Fondo más oscuro al presionar */
+    border: 2px solid #4c566a; /* Borde más oscuro */
+}
+
+/* Etiquetas (QLabel) */
+QLabel {
+    font-size: 16px;
+    color: #eceff4; /* Texto claro */
+    font-weight: bold;
+}
+
+/* Campos de texto (QLineEdit) */
+QLineEdit {
+    background-color: #3b4252; /* Fondo oscuro */
+    color: #eceff4; /* Texto claro */
+    border: 2px solid #4c566a; /* Borde gris oscuro */
+    border-radius: 5px;
+    padding: 5px;
+}
+
+QLineEdit:focus {
+    border: 2px solid #81a1c1; /* Borde azul claro al enfocar */
+}
+
+/* QStackedWidget */
+QStackedWidget {
+    background-color: #3b4252; /* Fondo oscuro */
+    border: 2px solid #4c566a; /* Borde gris oscuro */
+    border-radius: 8px;
+}
+
+/* Fondo de los botones de navegación */
+QPushButton#MenuButton {
+    background-color: #88c0d0; /* Fondo azul claro */
+    color: #2e3440; /* Texto oscuro */
+    border-radius: 5px;
+}
+
+QPushButton#MenuButton:hover {
+    background-color: #81a1c1; /* Fondo azul más oscuro */
+}
+
+/* Fondo de las páginas del QStackedWidget */
+QWidget#page, QWidget#page_2, QWidget#page_3, QWidget#page_4, QWidget#page_5, QWidget#page_6, QWidget#page_7 {
+    background-color: #434c5e; /* Fondo gris oscuro */
+    border-radius: 10px;
+}
+
+/* Scrollbars */
+QScrollBar:vertical, QScrollBar:horizontal {
+    background-color: #3b4252; /* Fondo oscuro */
+    border: none;
+    width: 10px;
+    margin: 0px;
+}
+
+QScrollBar::handle {
+    background-color: #81a1c1; /* Azul claro */
+    border-radius: 5px;
+}
+
+QScrollBar::handle:hover {
+    background-color: #5e81ac; /* Azul más oscuro */
+}
+
+QScrollBar::add-line, QScrollBar::sub-line {
+    background: none;
+}
+
+/* Botones de perfil y ajustes */
+QPushButton#PerfilButton, QPushButton#pushButton {
+    background-color: #88c0d0; /* Fondo azul claro */
+    border-radius: 50%; /* Forma circular */
+    width: 40px;
+    height: 40px;
+}
+
+QPushButton#PerfilButton:hover, QPushButton#pushButton:hover {
+    background-color: #81a1c1; /* Fondo azul más oscuro */
+}
