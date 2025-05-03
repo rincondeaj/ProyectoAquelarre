@@ -1,0 +1,48 @@
+#VILLANO
+        (23, 63, 'Armas'),
+        (23, 65, 'Armas'),
+        (23, 69, 'Armas'),
+        (23, 70, 'Armas'), 
+        (23, 71, 'Armas'), 
+        (23, 72, 'Armas'), 
+        (23, 73, 'Armas'), 
+        (23, 74, 'Armas'),
+#SOLDADO
+        (16, 63, 'Armas'),
+        (16, 64, 'Armas'),
+        (16, 65, 'Armas'),
+        (16, 66, 'Armas'),
+        (16, 69, 'Armas'),
+        (16, 71, 'Armas'),
+        (16, 72, 'Armas'),
+        (16, 74, 'Armas'),
+
+#NOBLES
+
+        (16, 64, 'Armas'),
+        (16, 65, 'Armas'),
+        (16, 66, 'Armas'),
+        (16, 67, 'Armas'),
+        (16, 68, 'Armas'),
+        (16, 71, 'Armas'),
+        (16, 74, 'Armas'),
+
+#VILLANO O SOLDADO
+        (23, 63, 'Armas'),
+        (23, 64, 'Armas'),
+        (23, 65, 'Armas'),
+        (23, 69, 'Armas'),
+        (23, 70, 'Armas'), 
+        (23, 71, 'Armas'), 
+        (23, 72, 'Armas'), 
+        (23, 73, 'Armas'), 
+        (23, 74, 'Armas'),
+
+#IDIOMAS
+        (28, 75, 'Idiomas'),
+        (28, 76, 'Idiomas'),
+        (28, 77, 'Idiomas'),
+        (28, 78, 'Idiomas'),
+        (28, 79, 'Idiomas'),
+        (28, 80, 'Idiomas'),
+        (28, 81, 'Idiomas'),

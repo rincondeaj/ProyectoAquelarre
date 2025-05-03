@@ -1,11 +1,104 @@
 import sys
 import os
 import webbrowser
-from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox, QCompleter
+from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox, QCompleter, QFrame, QLabel, QVBoxLayout, QHBoxLayout, QScrollArea, QWidget, QMenu, QAction
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
 from menu import Ui_MainWindow  # Importa la interfaz generada desde menu.py
 from manual import ManualFunctions
 from button_connections import setup_button_connections
+
+def create_personaje_frame(file_name, number):
+    """
+    Crea un QFrame con una imagen pequeña a la izquierda, texto y un número a la derecha.
+    Agrega un menú contextual con opciones al hacer clic derecho.
+    :param file_name: Nombre del archivo (texto a mostrar).
+    :param number: Número asociado al archivo.
+    :return: Un QFrame con los elementos organizados.
+    """
+    # Crear el QFrame principal
+    frame = QFrame()
+    frame.setStyleSheet("background-color: #e0e0e0; border: 1px solid #000; border-radius: 5px;")
+    frame.setMinimumSize(300, 100)  # Tamaño mínimo del rectángulo
+
+    # Crear un diseño horizontal para el QFrame
+    layout = QHBoxLayout(frame)
+
+    # Crear un QLabel para la imagen
+    image_label = QLabel()
+    pixmap = QPixmap("resources/images/Adela.jpeg")  # Ruta de la imagen
+    pixmap = pixmap.scaled(50, 50, Qt.KeepAspectRatio, Qt.SmoothTransformation)  # Escalar la imagen a un tamaño más pequeño
+    image_label.setPixmap(pixmap)
+    image_label.setFixedSize(60, 60)  # Tamaño fijo del contenedor de la imagen
+    image_label.setAlignment(Qt.AlignCenter)
+
+    # Crear un diseño vertical para el texto y el número
+    text_layout = QVBoxLayout()
+
+    # Crear un QLabel para el texto (nombre del archivo)
+    text_label = QLabel(f"Ficha: {file_name}")
+    text_label.setStyleSheet("font-size: 12px; color: #555;")
+    text_label.setAlignment(Qt.AlignCenter)
+
+    # Crear un QLabel para el número
+    number_label = QLabel(f"PV : {number}")
+    number_label.setStyleSheet("font-size: 12px; color: #555;")
+    number_label.setAlignment(Qt.AlignCenter)
+
+    # Agregar el texto y el número al diseño vertical
+    text_layout.addWidget(text_label)
+    text_layout.addWidget(number_label)
+
+    # Crear un diseño vertical para Estado y Jugador
+    state_layout = QVBoxLayout()
+
+    # Crear un QLabel para el estado
+    state_label = QLabel(f"Estado : Y")
+    state_label.setStyleSheet("font-size: 12px; color: #555;")
+    state_label.setAlignment(Qt.AlignCenter)
+
+    # Crear un QLabel para el jugador
+    player_label = QLabel(f"Jugador : Z")
+    player_label.setStyleSheet("font-size: 12px; color: #555;")
+    player_label.setAlignment(Qt.AlignCenter)
+
+    # Agregar Estado y Jugador al diseño vertical
+    state_layout.addWidget(state_label)
+    state_layout.addWidget(player_label)
+
+    # Agregar la imagen, el diseño de texto y el diseño de estado al diseño horizontal
+    layout.addWidget(image_label)  # Imagen a la izquierda
+    layout.addLayout(text_layout)  # Texto y número en el centro
+    layout.addLayout(state_layout)  # Estado y jugador a la derecha
+
+    # Agregar un menú contextual al QFrame
+    def show_context_menu(pos):
+        menu = QMenu()
+        abrir_action = QAction("Abrir", frame)
+        eliminar_action = QAction("Eliminar", frame)
+        estadisticas_action = QAction("Estadísticas", frame)
+        notas_action = QAction("Notas", frame)
+
+        # Conectar las acciones a funciones (puedes definirlas según tu lógica)
+        abrir_action.triggered.connect(lambda: print(f"Abrir {file_name}"))
+        eliminar_action.triggered.connect(lambda: print(f"Eliminar {file_name}"))
+        estadisticas_action.triggered.connect(lambda: print(f"Estadísticas de {file_name}"))
+        notas_action.triggered.connect(lambda: print(f"Notas de {file_name}"))
+
+        # Agregar las acciones al menú
+        menu.addAction(abrir_action)
+        menu.addAction(eliminar_action)
+        menu.addAction(estadisticas_action)
+        menu.addAction(notas_action)
+
+        # Mostrar el menú en la posición del cursor
+        menu.exec_(frame.mapToGlobal(pos))
+
+    # Sobrescribir el evento de clic derecho
+    frame.setContextMenuPolicy(Qt.CustomContextMenu)
+    frame.customContextMenuRequested.connect(show_context_menu)
+
+    return frame
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -14,6 +107,17 @@ class MainWindow(QMainWindow):
         # Configura la interfaz generada por menu.py
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+
+        # Configura el QScrollArea para la página 2
+        self.scroll_area = QScrollArea(self.ui.page_2)
+        self.scroll_area.setWidgetResizable(True)
+        self.scroll_content = QWidget()
+        self.scroll_layout = QVBoxLayout(self.scroll_content)
+        self.scroll_layout.setSpacing(5)  # Espaciado mínimo de 5 píxeles entre rectángulos
+        self.scroll_area.setWidget(self.scroll_content)
+
+        # Reemplaza el layout de la página 2 con el QScrollArea
+        self.ui.verticalLayout_6.addWidget(self.scroll_area)
 
         # Inicializa las funciones del manual
         self.manual_functions = ManualFunctions(self)
@@ -29,6 +133,9 @@ class MainWindow(QMainWindow):
         self.ui.stackedWidget.setCurrentIndex(0)  # Cambia a la página que contiene Manual_Stacked_Widget
         self.ui.Manual_Stacked_Widget.setCurrentIndex(0)  # Cambia a la página 0 dentro de Manual_Stacked_Widget
 
+        # Conecta el evento de cambio de página
+        self.ui.stackedWidget.currentChanged.connect(self.on_page_changed)
+
         # Configura el autocompletado para el buscador
         self.setup_autocomplete()
 
@@ -43,6 +150,13 @@ class MainWindow(QMainWindow):
             6: self.navigate_to_manual_page_6,
         }
         setup_button_connections(self.ui, self.open_pdf_at_page, navigate_to_manual_page)
+
+    def on_page_changed(self, index):
+        """
+        Maneja el evento de cambio de página en el stackedWidget.
+        """
+        if index == 2:  # Página 2
+            self.show_personajes_files()
 
     def setup_autocomplete(self):
         """
@@ -187,6 +301,38 @@ class MainWindow(QMainWindow):
             webbrowser.open(f"file://{pdf_path}#page={page}")
         except Exception as e:
             QMessageBox.critical(self, "Error", f"No se pudo abrir el archivo PDF: {str(e)}")
+
+    def show_personajes_files(self):
+        """
+        Muestra un rectángulo por cada archivo .aq en la carpeta 'personajes' en la página 2 del stackedWidget.
+        """
+        # Ruta de la carpeta 'personajes'
+        personajes_folder = os.path.join(os.getcwd(), "resources/personajes")
+
+        # Verifica si la carpeta existe
+        if not os.path.exists(personajes_folder):
+            QMessageBox.warning(self, "Advertencia", f"No se encontró la carpeta: {personajes_folder}")
+            return
+
+        # Filtra los archivos que terminan en .aq
+        archivos_aq = [f for f in os.listdir(personajes_folder) if f.endswith(".aq")]
+
+        # Limpia el layout de la página 2 antes de agregar nuevos widgets
+        for i in reversed(range(self.scroll_layout.count())):
+            widget_to_remove = self.scroll_layout.itemAt(i).widget()
+            if widget_to_remove:
+                widget_to_remove.deleteLater()
+
+        # Crea un rectángulo para cada archivo
+        for index, archivo in enumerate(archivos_aq, start=1):
+            # Crea un QFrame utilizando la función create_personaje_frame
+            frame = create_personaje_frame(archivo, index)
+
+            # Agrega el QFrame al layout del scroll
+            self.scroll_layout.addWidget(frame)
+
+        # Agrega un espacio al final para mantener el diseño limpio
+        self.scroll_layout.addStretch()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
