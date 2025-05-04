@@ -5,6 +5,7 @@ from data import REINOS, CULTURAS, POSICION_SOCIAL_CRISTIANA, TIPO_POSICION_SOCI
 from data import TRABAJOS_SOCIEDAD_CRISTIANA, TRABAJOS_SOCIEDAD_ISLAMICA, TRABAJOS_SOCIEDAD_JUDIA
 from nombres import NOMBRES_ARAGONESES, NOMBRES_CASTELLANOS, NOMBRES_CATALANES, NOMBRES_EUSKERAS, NOMBRES_GALLEGO_PORTUGUESES, NOMBRES_HEBREOS, NOMBRES_MUSULMANES
 from data import SITUACIONES_FAMILIARES, TIPOS_BASTARDIA, TIPOS_AREA, COMPETENCIAS_NUEVAS, TABLA_PESO_ALTURA
+import os
 
 #Variable global
 TOTAL_CARACTERISTICAS = 0
@@ -183,11 +184,19 @@ class GeneradorPersonaje:
         """
         global TOTAL_CARACTERISTICAS  # Usar la variable global
 
-        # Conectar a la base de datos
-        conexion = sqlite3.connect("BaseDatos/profesiones.db")
-        cursor = conexion.cursor()
+        # Ruta absoluta de la base de datos
+        db_path = os.path.join(os.getcwd(), "BaseDatos/profesiones.db")
+
+        # Verificar si la base de datos existe
+        if not os.path.exists(db_path):
+            print(f"Error: No se encontró la base de datos en {db_path}")
+            return None
 
         try:
+
+            conexion = sqlite3.connect(db_path)
+            cursor = conexion.cursor()
+
             # Construir la consulta SQL con el campo dinámico
             query = f"SELECT {campo} FROM Profesiones WHERE Nombre = ?"
             cursor.execute(query, (trabajo,))
@@ -313,8 +322,17 @@ class GeneradorPersonaje:
         Selecciona un idioma con el que la profesión sea competente, basado en el tipo 'Idiomas',
         asegurándose de no seleccionar el mismo idioma dos veces.
         """
+
+        # Ruta absoluta de la base de datos
+        db_path = os.path.join(os.getcwd(), "BaseDatos/profesiones.db")
+
+        # Verificar si la base de datos existe
+        if not os.path.exists(db_path):
+            print(f"Error: No se encontró la base de datos en {db_path}")
+            return None
+        
         # Conectar a la base de datos
-        conexion = sqlite3.connect("BaseDatos/profesiones.db")
+        conexion = sqlite3.connect(db_path)
         cursor = conexion.cursor()
 
         try:
@@ -376,8 +394,18 @@ class GeneradorPersonaje:
         Busca en la tabla Profesion_Competencia la relación entre la profesión y la competencia,
         y devuelve las columnas Caracteristica y tipo. Si no se encuentra, genera un valor aleatorio basado en la característica.
         """
+
+        # Ruta absoluta de la base de datos
+        db_path = os.path.join(os.getcwd(), "BaseDatos/profesiones.db")
+
+        # Verificar si la base de datos existe
+        if not os.path.exists(db_path):
+            print(f"Error: No se encontró la base de datos en {db_path}")
+            return None
+
+
         # Conectar a la base de datos
-        conexion = sqlite3.connect("BaseDatos/profesiones.db")
+        conexion = sqlite3.connect(db_path)
         cursor = conexion.cursor()
 
         try:
@@ -512,17 +540,22 @@ class GeneradorPersonaje:
             print("El gasto es random")
             self._gasto = random.randint(1, 200)
         return self._gasto
-    
-    def getOrgullo(self):
-
-    def getVerguenza(self):
         
     def getArma(self, slot):
         """
         Obtiene los datos de un arma desde la base de datos para el slot especificado.
         """
+
+        # Ruta absoluta de la base de datos
+        db_path = os.path.join(os.getcwd(), "BaseDatos/armas.db")
+
+        # Verificar si la base de datos existe
+        if not os.path.exists(db_path):
+            print(f"Error: No se encontró la base de datos en {db_path}")
+            return None
+
         # Conectar a la base de datos
-        conexion = sqlite3.connect("BaseDatos/armas.db")
+        conexion = sqlite3.connect(db_path)
         cursor = conexion.cursor()
 
         try:
@@ -722,13 +755,6 @@ class GeneradorPersonaje:
             "IngresoMensual": lambda: self.getIngresoMensual(),
             "Dineros": lambda: self.getDinero(),
             "GastoSemanal": lambda: self.getGasto(),
-
-            "OrgullosVerguenzas1": lambda: self.getOrgullo(),
-            "OrgullosVerguenzas2": lambda: self.getOrgullo(),
-            "OrgullosVerguenzas3": lambda: self.getOrgullo(),
-            "OrgullosVerguenzas4": lambda: self.getVerguenza(),
-            "OrgullosVerguenzas5": lambda: self.getVerguenza(),
-            "OrgullosVerguenzas6": lambda: self.getVerguenza(),
         }
 
         # Manejar las descripciones

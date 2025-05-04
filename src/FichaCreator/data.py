@@ -372,5 +372,9 @@ TABLA_PESO_ALTURA = {
     13:  {"altura_varas": 1.72, "peso_libras": 134},
     14:  {"altura_varas": 1.74, "peso_libras": 140},
     15:  {"altura_varas": 1.77, "peso_libras": 146},
-    16:  {"altura_varas": 1.79, "peso_libras": 150},  # Para 16 o más
+    16:  {"altura_varas": 1.79, "peso_libras": 150},
+    17:  {"altura_varas": 1.79, "peso_libras": 150},
+    18:  {"altura_varas": 1.79, "peso_libras": 150},
+    19:  {"altura_varas": 1.79, "peso_libras": 150},
+    20:  {"altura_varas": 1.79, "peso_libras": 150}, # Para 16 o más
 }
